@@ -60,14 +60,15 @@
     }    
 </style>
 <script>
-    var account_username = ["pqlcp","tmdt","dtxd","dtcd","moon","bdhtd","hckxd","sgr"];
-    var account_password = ["13hbt","hotgon","niceboy","boynhadau","trangtron","tang6","tochim","sgr"];
+    var account_username = ["pqlcp","tmdt","dtxd","dtcd","moon","bdhtd","hckxd","sgr","gsr"];
+    var account_password = ["13hbt","hotgon","niceboy","boynhadau","trangtron","tang6","tochim","sgr","gsr"];
     var page = "index_CHUNG.html";
     var page_tmdt = "index_TMDT.html";
     var page_dtxd = "index_DTXD.html";
     var page_dtcd = "index_DTCD.html";
     var page_hckxd = "index_HCKXD.html";
     var page_nq = "index_NQ.html";
+    var page_gsr = "index_GGG.html";
 
     function login() {
         const username = document.getElementById("username").value;
@@ -96,6 +97,9 @@
 		break;
 		case 7:
 		window.location.href = page_nq;
+		break;
+		case 8:
+		window.location.href = page_gsr;
 		break;
 		default:
 		window.location.href = page;
