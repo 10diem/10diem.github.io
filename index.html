@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ÔN TẬP KỲ THI QUỐC DÂN 2025</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --accent: #06b6d4;
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(120deg, #dffcff, #ffffff, #b9f6f9);
+      background-size: 300% 300%;
+      animation: gradientMove 12s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 36px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.1);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(25px);
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    p.lead {
+      color: var(--muted);
+      margin-bottom: 26px;
+      font-size: 16px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    a.btn {
+      display: inline-block;
+      text-decoration: none;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all .35s ease;
+    }
+
+    a.btn.green {
+      background: linear-gradient(90deg, #34d399, #10b981);
+    }
+    a.btn.pink {
+      background: linear-gradient(90deg, #ec4899, #db2777);
+    }
+    a.btn.purple {
+      background: linear-gradient(90deg, #a855f7, #7c3aed);
+    }
+
+    a.btn:hover {
+      transform: scale(1.05);
+      filter: brightness(1.18);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    @media (min-width:540px) {
+      .actions { flex-direction: column; }
+      a.btn { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <h1>ÔN TẬP KỲ THI QUỐC DÂN 2025</h1>
+    <p class="lead">Chọn nội dung ôn tập.</p>
+
+    <div class="actions" role="group" aria-label="Chọn ôn tập">
+      <a class="btn green" href="Ontap1 (Published)/index.html" role="button">Ôn tập chuyên môn</a>
+      <a class="btn pink" href="NQ3 (Published)/index.html" role="button">Nghị quyết Chương 3</a>
+      <a class="btn purple" href="KTC (Published)/index.html" role="button">47 câu Kiến thức chung</a>
+    </div>
+  </div>
+</body>
+</html>
