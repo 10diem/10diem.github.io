@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bảng tổng hợp cá nhân</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--nav:#262329;--text:#222;--muted:#8a8a90;--line:#e6e6ea;--head:#e4edf9;--accent:#f7b500;--pill:#fdecc8;--pillt:#e8710a;--field:#f6f6f8;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--text);font:400 16px/1.5 "Montserrat",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav{background:var(--nav);color:#fff;padding-top:env(safe-area-inset-top,0px)}
+.nav-in{max-width:1420px;margin:0 auto;height:86px;display:flex;align-items:center;gap:36px;padding:0 20px}
+.brand img{display:block;height:auto;max-height:62px;width:auto}
+.menu{display:flex;gap:36px;margin-left:20px}
+.nav a{color:#fff;text-decoration:none;font-weight:600;font-size:17px;white-space:nowrap}
+.sp{flex:1}
+.user{display:flex;align-items:center;gap:12px;font-weight:600;font-size:17px}
+.ava{width:44px;height:44px;border-radius:50%;background:#f2d9a8;color:#5b3d00;display:grid;place-items:center;font-weight:700;font-size:15px}
+.hero{background:linear-gradient(120deg,#3a301c,#2b2717 55%,#22210f);color:#fff;padding:36px 0 36px;border-top:1px solid #3b3840}
+.wrap{max-width:1580px;margin:0 auto;padding:0 20px}
+.crumb{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:500}
+.crumb a{color:#fff;text-decoration:none}
+h1{margin:34px 0 0;font-size:32px;line-height:1.2;font-weight:700}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-top:6px;overflow-x:auto}
+.tabs a{padding:24px 18px 14px;font-size:19px;font-weight:500;color:var(--text);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs a.on{font-weight:700;border-color:var(--accent)}
+.filters{display:flex;align-items:center;gap:10px;margin:38px 0 36px;flex-wrap:wrap}
+.sel{position:relative}
+.sel select,.search input{height:62px;border:1px solid var(--line);border-radius:8px;background:var(--field);font:400 19px "Montserrat",system-ui,sans-serif;color:var(--text);padding:0 36px 0 12px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.sel::after{content:"";position:absolute;right:16px;top:50%;border:5px solid transparent;border-top-color:#777;transform:translateY(-25%);pointer-events:none}
+.sel.w1 select{width:150px}.sel.w2 select{width:150px}
+.search{position:relative;flex:0 1 421px;min-width:220px}
+.search input{width:100%;background:#fff;padding:0 14px 0 54px;cursor:text}
+.search input::placeholder{color:#b3b3b8}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#7c8794}
+.sort{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:20px;font-weight:500}
+.sort .sel select{width:147px}
+.sel select:focus-visible,.search input:focus-visible{outline:3px solid #1b6fcf;outline-offset:1px}
+.msg{display:none;background:#fff7e0;border:1px solid #f1d58a;border-radius:10px;padding:14px 18px;margin:-12px 0 24px;font-size:16px;align-items:center;gap:14px;flex-wrap:wrap}
+.msg.show{display:flex}
+.msg button{border:0;background:var(--accent);color:#fff;font:700 16px "Montserrat",system-ui,sans-serif;border-radius:8px;padding:10px 18px;cursor:pointer}
+.msg.err{background:#fdeaea;border-color:#f0b4b4}
+.tw{overflow-x:auto;border-radius:10px}
+table{width:100%;min-width:980px;border-collapse:collapse;table-layout:fixed;font-size:19px}
+thead th{background:var(--head);height:64px;text-align:left;font-weight:600;padding:0 8px}
+thead th:first-child{border-radius:10px 0 0 0;padding-left:10px}thead th:last-child{border-radius:0 10px 0 0;text-align:center}
+tbody td{padding:12px 8px;border-bottom:1px solid var(--line);vertical-align:middle;height:80px}
+tbody td:first-child{padding-left:14px}
+td.nm{font-weight:600}
+td.nm a{color:inherit;text-decoration:none}td.nm a:hover{color:#1b6fcf;text-decoration:underline}
+td.ac{text-align:center}
+.pill{display:inline-block;background:var(--pill);color:var(--pillt);border-radius:20px;padding:5px 12px;font-weight:500}
+.btn{display:inline-block;border:1px solid #cfcfd5;border-radius:10px;padding:8px 16px;font-weight:600;font-size:18px;color:var(--text);text-decoration:none;background:#fff}
+a.btn:hover{border-color:#1b6fcf;color:#1b6fcf}
+.btn.off{opacity:.45}
+.empty{text-align:center;color:var(--muted);padding:40px 0;font-size:18px}
+.foot{display:flex;align-items:center;margin:18px 0 60px;gap:16px}
+.count{color:var(--muted);font-size:15px;min-width:200px}
+.pager{display:flex;align-items:center;gap:14px;margin:0 auto;padding-right:200px}
+.pager button{border:0;background:transparent;color:#8a8a90;min-width:27px;height:36px;border-radius:5px;font:500 18px "Montserrat",system-ui,sans-serif;cursor:pointer}
+.pager button.on{background:#fdeaa5;color:var(--text);font-weight:700;text-decoration:underline}
+.pager button:disabled{opacity:.35;cursor:default}
+.pager button:focus-visible{outline:3px solid #1b6fcf}
+@media (max-width:900px){
+ .menu,.uname{display:none}.nav-in{gap:16px;height:70px}.brand img{max-height:48px}
+ h1{font-size:24px;margin-top:22px}.sort{margin-left:0;font-size:16px;gap:10px}
+ .sel select,.search input{height:52px;font-size:16px}.sel.w1 select,.sel.w2 select{width:130px}.sort .sel select{width:130px}
+ .pager{padding-right:0}.count{min-width:0}.foot{flex-direction:column;align-items:flex-start}.pager{margin:0}
+}
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-in">
+ <a class="brand" href="#" aria-label="Trang chủ"><img src="data:image/png;base64,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" alt="Sun Group"></a>
+ <nav class="menu"><a href="#">Trang chủ</a><a href="#">Chương trình đào tạo</a><a href="#">Lớp học</a><a href="#">Thư viện</a><a href="#">Tin tức</a></nav>
+ <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-label="Thông báo"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+ <div class="sp"></div>
+ <div class="user"><div class="ava" id="ava"></div><span class="uname" id="uname"></span>
+ <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+</div></header>
+
+<section class="hero"><div class="wrap">
+ <div class="crumb">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+  <a href="#">Trang chủ</a><span>›</span><span>Bảng tổng hợp cá nhân</span>
+ </div>
+ <h1>Bảng tổng hợp cá nhân</h1>
+</div></section>
+
+<main class="wrap">
+ <nav class="tabs" aria-label="Mục">
+  <a href="#">Lớp học</a><a href="#">Lịch học</a><a href="#" class="on" aria-current="page">Kỳ thi</a><a href="#">Kỳ thi thẩm định tham gia</a><a href="#">Đề xuất nhu cầu đào tạo</a><a href="#">Lịch học dự kiến</a><a href="#">Chứng chỉ</a><a href="#">Khảo sát</a>
+ </nav>
+
+ <div class="filters">
+  <div class="sel w1"><select id="fy" aria-label="Năm học"><option value="">Năm học</option></select></div>
+  <div class="sel w2"><select id="fs" aria-label="Trạng thái"><option value="">Tất cả</option><option>Đang diễn ra</option><option>Sắp diễn ra</option><option>Đã kết thúc</option></select></div>
+  <div class="search"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg><input id="q" type="search" placeholder="Tìm kiếm kỳ thi" aria-label="Tìm kiếm kỳ thi"></div>
+  <div class="sort"><span>Sắp xếp theo</span><div class="sel"><select id="so" aria-label="Sắp xếp theo"><option value="new">Mới nhất</option><option value="old">Cũ nhất</option><option value="az">Tên A-Z</option></select></div></div>
+ </div>
+
+ <div class="msg" id="msg" role="status"><span id="mt"></span><button id="pk" type="button">Chọn file TONGHOP.xlsx</button><input id="fi" type="file" accept=".xlsx,.xls,.csv" hidden></div>
+
+ <div class="tw"><table>
+  <colgroup><col style="width:5%"><col style="width:19%"><col style="width:17%"><col style="width:17%"><col style="width:17%"><col style="width:15%"><col style="width:10%"></colgroup>
+  <thead><tr><th>STT</th><th>Tên ca thi</th><th>Tên đợt thi</th><th>Ngày bắt đầu</th><th>Ngày kết thúc</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+  <tbody id="tb"></tbody>
+ </table></div>
+ <div class="foot"><div class="count" id="ct"></div><div class="pager" id="pg"></div></div>
+</main>
+
+<script>
+/* ====== CẤU HÌNH ====== */
+const CONFIG = {
+ file: "TONGHOP.xlsx",          // file dữ liệu đặt cùng thư mục với trang này
+ pageSize: 10,
+ user: "GĐ",
+ // Dùng khi file Excel không có cột tương ứng:
+ defaults: { dot:"—", start:"17:00 - 19/10/2026", end:"23:59 - 25/10/2026", status:"Đang diễn ra" }
+};
+/* ====== HẾT CẤU HÌNH ====== */
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>String(s==null?"":s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/gi,"d").toLowerCase().replace(/\s+/g," ").trim();
+let ALL=[], page=1;
+$("#uname").textContent=CONFIG.user; $("#ava").textContent=CONFIG.user.slice(0,2);
+
+function linkOf(f){
+ f=String(f||"").trim().replace(/\\/g,"/"); if(!f) return "";
+ if(/^[a-z][a-z0-9+.-]*:/i.test(f)||f.startsWith("/")) return f;
+ return f.split("/").map(encodeURIComponent).join("/");
+}
+function msg(t,err,pick){ $("#mt").textContent=t; $("#msg").className="msg show"+(err?" err":""); $("#pk").style.display=pick?"":"none"; }
+
+function ingest(buf){
+ const wb=XLSX.read(buf,{type:"array"}); let rows=[],hi=-1;
+ for(const n of wb.SheetNames){ rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:false,defval:""}); hi=rows.findIndex(r=>r.some(c=>norm(c)==="ten ca thi")); if(hi>=0) break; }
+ if(hi<0) throw new Error("Không thấy cột “Tên ca thi” trong dòng tiêu đề.");
+ const head=rows[hi].map(norm), ix=k=>{const e=head.indexOf(k);return e>=0?e:head.findIndex(h=>h.includes(k));}, I={name:ix("ten ca thi"),file:ix("file thi"),dot:Math.max(ix("ten dot thi"),ix("dot thi")),start:ix("ngay bat dau"),end:ix("ngay ket thuc"),status:ix("trang thai")};
+ const get=(r,k,d)=>(I[k]>=0&&String(r[I[k]]).trim())?String(r[I[k]]).trim():d;
+ ALL=rows.slice(hi+1).filter(r=>String(r[I.name]||"").trim()).map(r=>({
+  name:get(r,"name",""), file:get(r,"file",""), dot:get(r,"dot",CONFIG.defaults.dot), start:get(r,"start",CONFIG.defaults.start), end:get(r,"end",CONFIG.defaults.end), status:get(r,"status",CONFIG.defaults.status)
+ }));
+ const ys=[...new Set(ALL.map(x=>(x.start.match(/(?:19|20)\d\d/)||[])[0]).filter(Boolean))].sort().reverse();
+ $("#fy").innerHTML='<option value="">Năm học</option>'+ys.map(y=>`<option>${y}</option>`).join("");
+ const miss=[]; if(I.dot<0) miss.push("“Tên đợt thi”"); if(I.file<0) miss.push("“File thi”");
+ if(miss.length) msg("File Excel chưa có cột "+miss.join(" và ")+(I.file<0?", nên chưa tạo được liên kết.":". Cột Tên đợt thi sẽ hiển thị “—”.")+" Các cột đang có trong file: "+rows[hi].map(c=>String(c).trim()).filter(Boolean).join(", ")+".",true,false); else $("#msg").className="msg";
+ page=1; render();
+}
+async function load(){
+ if(typeof XLSX==="undefined"){ msg("Không tải được thư viện đọc Excel (cần Internet). Hãy kiểm tra kết nối rồi tải lại trang.",true,false); render(); return; }
+ try{ const r=await fetch(CONFIG.file,{cache:"no-store"}); if(!r.ok) throw 0; ingest(await r.arrayBuffer()); }
+ catch(e){ msg("Chưa tự đọc được "+CONFIG.file+" (trình duyệt chặn khi mở trực tiếp từ ổ đĩa). Hãy chọn file thủ công, hoặc mở trang qua máy chủ cục bộ.",false,true); render(); }
+}
+async function pick(file){
+ try{ ingest(await file.arrayBuffer()); }catch(e){ msg("Không đọc được file: "+e.message,true,true); }
+}
+$("#pk").onclick=()=>$("#fi").click();
+$("#fi").onchange=e=>{ if(e.target.files[0]) pick(e.target.files[0]); };
+addEventListener("dragover",e=>e.preventDefault());
+addEventListener("drop",e=>{ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) pick(f); });
+
+function view(){
+ const q=norm($("#q").value), y=$("#fy").value, s=norm($("#fs").value), so=$("#so").value;
+ let L=ALL.filter(x=>(!q||norm(x.name).includes(q))&&(!y||x.start.includes(y))&&(!s||norm(x.status)===s));
+ if(so==="old") L=[...L].reverse(); else if(so==="az") L=[...L].sort((a,b)=>a.name.localeCompare(b.name,"vi"));
+ return L;
+}
+function render(){
+ const L=view(), P=Math.max(1,Math.ceil(L.length/CONFIG.pageSize)); page=Math.min(page,P);
+ const from=(page-1)*CONFIG.pageSize, cut=L.slice(from,from+CONFIG.pageSize);
+ $("#tb").innerHTML=cut.length?cut.map((x,i)=>{
+  const h=linkOf(x.file), nm=h?`<a href="${esc(h)}">${esc(x.name)}</a>`:esc(x.name);
+  const bt=h?`<a class="btn" href="${esc(h)}">Chi tiết</a>`:`<span class="btn off" aria-disabled="true">Chi tiết</span>`;
+  return `<tr><td>${from+i+1}</td><td class="nm">${nm}</td><td>${esc(x.dot)}</td><td>${esc(x.start)}</td><td>${esc(x.end)}</td><td><span class="pill">${esc(x.status)}</span></td><td class="ac">${bt}</td></tr>`;
+ }).join(""):`<tr><td colspan="7" class="empty">${ALL.length?"Không có kết quả phù hợp.":"Chưa có dữ liệu."}</td></tr>`;
+ $("#ct").textContent="Tổng số bài thi: "+L.length;
+ let b=`<button data-p="${page-1}" ${page<=1?"disabled":""} aria-label="Trang trước">‹</button>`;
+ for(let p=1;p<=P;p++) b+=`<button data-p="${p}" class="${p===page?"on":""}" ${p===page?'aria-current="page"':""}>${p}</button>`;
+ b+=`<button data-p="${page+1}" ${page>=P?"disabled":""} aria-label="Trang sau">›</button><button data-p="${P}" ${page>=P?"disabled":""} aria-label="Trang cuối">»</button>`;
+ $("#pg").innerHTML=b;
+}
+$("#pg").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b&&!b.disabled){ page=+b.dataset.p; render(); } });
+["#q","#fy","#fs","#so"].forEach(s=>$(s).addEventListener(s==="#q"?"input":"change",()=>{ page=1; render(); }));
+load();
+</script>
+</body>
+</html>
